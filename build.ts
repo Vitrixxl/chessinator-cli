@@ -2,6 +2,7 @@ import envPaths from "env-paths";
 import { mkdir, copyFile, unlink } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
+import duckdb from "duckdb";
 
 await mkdir("dist", { recursive: true });
 
@@ -87,21 +88,22 @@ if (!!existsSync(puzzleDbPath)) {
 
   // Create database using duckdb
   console.log("Creating database with DuckDB...");
-  const duckdbProc = Bun.spawn(
-    [
-      "duckdb",
-      "-c",
+  const db = new duckdb.Database(":memory:");
+
+  await new Promise((resolve, reject) => {
+    db.run(
       `ATTACH '${puzzleDbPath}' AS sqlite (TYPE sqlite);
 CREATE TABLE sqlite.puzzle AS SELECT * FROM read_csv_auto('./${csvFile}', SAMPLE_SIZE=-1);
 CREATE TABLE sqlite.solved (id VARCHAR);
 DETACH DATABASE sqlite;`,
-    ],
-    {
-      stdout: "inherit",
-      stderr: "inherit",
-    },
-  );
-  await duckdbProc.exited;
+      (err: Error) => {
+        if (err) reject(err);
+        else resolve(null);
+      }
+    );
+  });
+
+  db.close();
   console.log("Database created successfully!");
 
   // Clean up temporary files

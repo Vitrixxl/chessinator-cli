@@ -5,40 +5,32 @@ A terminal-based chess puzzle trainer that uses Lichess's puzzle database. Train
 ## Features
 
 - Interactive CLI chess puzzle interface with beautiful Unicode pieces
-- Automatic download and setup of Lichess puzzle database (~4M+ puzzles)
+- Automatic download and setup of Lichess puzzle database (~5,4M+ puzzles)
 - Progress tracking (tracks solved puzzles)
-- Real-time move validation
-- Color-coded error messages
 
 ## Prerequisites
 
 You need to have these tools installed:
 
 - [Bun](https://bun.sh) - JavaScript runtime
-- [DuckDB](https://duckdb.org) - Database management (for build process)
 - [zstd](https://github.com/facebook/zstd) - Decompression utility (for build process)
 
 ### Installing prerequisites
 
 **macOS:**
 ```bash
-brew install bun duckdb zstd
+brew install bun zstd
 ```
 
 **Linux (Arch):**
 ```bash
-pacman -S bun duckdb zstd
+pacman -S bun zstd
 ```
 
 **Linux (Debian/Ubuntu):**
 ```bash
 # Bun
 curl -fsSL https://bun.sh/install | bash
-
-# DuckDB
-wget https://github.com/duckdb/duckdb/releases/latest/download/duckdb_cli-linux-amd64.zip
-unzip duckdb_cli-linux-amd64.zip
-sudo mv duckdb /usr/local/bin/
 
 # zstd
 sudo apt install zstd

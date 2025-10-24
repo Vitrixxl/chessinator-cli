@@ -25,7 +25,7 @@ await mkdir(paths.data, { recursive: true });
 
 // Download puzzle database if not exists
 const puzzleDbPath = "./puzzle.db";
-if (!!existsSync(puzzleDbPath)) {
+if (!existsSync(puzzleDbPath)) {
   console.log("Puzzle database not found, downloading from Lichess...");
 
   const url = "https://database.lichess.org/lichess_db_puzzle.csv.zst";
@@ -96,10 +96,10 @@ if (!!existsSync(puzzleDbPath)) {
 CREATE TABLE sqlite.puzzle AS SELECT * FROM read_csv_auto('./${csvFile}', SAMPLE_SIZE=-1);
 CREATE TABLE sqlite.solved (id VARCHAR);
 DETACH DATABASE sqlite;`,
-      (err: Error) => {
+      (err) => {
         if (err) reject(err);
         else resolve(null);
-      }
+      },
     );
   });
 

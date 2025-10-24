@@ -10,11 +10,10 @@ import { SQL } from "bun";
 import React from "react";
 import TextInput from "ink-text-input";
 import envPaths from "env-paths";
-const db = new SQL("sqlite://puzzle.db");
+import path from "node:path";
+const paths = envPaths("chessinator-cli", { suffix: "" });
+const db = new SQL(`sqlite://${path.resolve(paths.data, "puzzle.db")}`);
 
-const data = envPaths("");
-
-console.log(data);
 // TYPES
 type Board = ({
   square: Square;
@@ -242,7 +241,6 @@ const App = () => {
           WELCOME TO CHESSINATOR-CLI
         </Text>
         <Text color={"cyan"}>Train your brain before your coding session</Text>
-        <Text color={"cyan"}>{puzzle.moves.map((m) => m + ",")}</Text>
       </Box>
       <BoardComponent board={board} playerColor={color} />
       {!finish ? (
@@ -271,7 +269,7 @@ const App = () => {
               {solved} / {total}
             </Text>
           </Box>
-          <Text>Moves : {chess.moves().map((m) => m + ",")}</Text>
+          {/* <Text>Moves : {chess.moves().map((m) => m + ",")}</Text> */}
           {error && <Text color={"red"}>{error}</Text>}
         </>
       ) : (
